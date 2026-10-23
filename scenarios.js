@@ -13,7 +13,7 @@ window.SCENARIOS = [
     title: "Miesha checks on GCHEXS",
     persona: { name: "Miesha Prince", email: "mieshaprince8@gmail.com" },
     chat: [
-      { k: "click", t: "Already have an account" },
+      { k: "type", t: "Hi, I already have a ShiftKey account" },
       { k: "type", t: "mieshaprince8@gmail.com" },
       { k: "type", t: "Where's my GCHEXS?" },
       { k: "type", t: "Yes please" }
@@ -41,7 +41,7 @@ window.SCENARIOS = [
     title: "Tracy: everything outstanding, then flu shots",
     persona: { name: "Tracy Curry", email: "tracylcurry3814@gmail.com" },
     chat: [
-      { k: "click", t: "Already have an account" },
+      { k: "type", t: "Hi, I already have a ShiftKey account" },
       { k: "type", t: "tracylcurry3814@gmail.com" },
       { k: "type", t: "What's still outstanding on my profile?" },
       { k: "type", t: "Tell me about my flu shot" },
@@ -69,7 +69,6 @@ window.SCENARIOS = [
     title: "KDADS timeline",
     persona: null,
     chat: [
-      { k: "click", t: "New to ShiftKey" },
       { k: "type", t: "How long does KDADS take?" },
       { k: "type", t: "No thanks" }
     ],
@@ -91,7 +90,6 @@ window.SCENARIOS = [
     title: "Louisiana State Police check, then Treshun",
     persona: { name: "Treshun Allen", email: "treshuun1@gmail.com" },
     chat: [
-      { k: "click", t: "New to ShiftKey" },
       { k: "type", t: "How long does the Louisiana State Police background check take?" },
       { k: "type", t: "I have an account, it's treshuun1@gmail.com" },
       { k: "type", t: "So where is mine?" }
@@ -114,7 +112,7 @@ window.SCENARIOS = [
     title: "\"I need to get paid\"",
     persona: { name: "Toryion Harris", email: "toryionharris14@gmail.com" },
     chat: [
-      { k: "click", t: "Already have an account" },
+      { k: "type", t: "Hi, I already have a ShiftKey account" },
       { k: "type", t: "toryionharris14@gmail.com" },
       { k: "type", t: "I need to get paid" },
       { k: "type", t: "How do I submit the invoice for the shift?" }
@@ -141,7 +139,6 @@ window.SCENARIOS = [
     title: "Am I eligible to work? (no account)",
     persona: null,
     chat: [
-      { k: "click", t: "New to ShiftKey" },
       { k: "type", t: "Am I eligible to work? What do I need?" }
     ],
     voice: [
@@ -163,7 +160,7 @@ window.SCENARIOS = [
     title: "Jami: eligible to work?",
     persona: { name: "Jami McClintock", email: "jamimcclintock@gmail.com" },
     chat: [
-      { k: "click", t: "Already have an account" },
+      { k: "type", t: "Hi, I already have a ShiftKey account" },
       { k: "type", t: "jamimcclintock@gmail.com" },
       { k: "type", t: "Can I start picking up shifts?" },
       { k: "type", t: "Yes please" }
@@ -188,7 +185,6 @@ window.SCENARIOS = [
     title: "How to set up pay (no account)",
     persona: null,
     chat: [
-      { k: "click", t: "New to ShiftKey" },
       { k: "type", t: "How do I set up pay?" },
       { k: "type", t: "Are there fees?" }
     ],
@@ -211,7 +207,7 @@ window.SCENARIOS = [
     title: "Jaime: W-2 and 1099",
     persona: { name: "Jaime Silva", email: "jaime.silva12@hotmail.com" },
     chat: [
-      { k: "click", t: "Already have an account" },
+      { k: "type", t: "Hi, I already have a ShiftKey account" },
       { k: "type", t: "jaime.silva12@hotmail.com" },
       { k: "type", t: "Will I get a W-2?" },
       { k: "type", t: "How do I get my 1099?" }
@@ -237,7 +233,6 @@ window.SCENARIOS = [
     title: "Maine BCC timeline (no account)",
     persona: null,
     chat: [
-      { k: "click", t: "New to ShiftKey" },
       { k: "type", t: "How long does Maine BCC take?" }
     ],
     voice: [
@@ -260,7 +255,7 @@ window.NEGATIVES = [
     title: "A: Unknown email, twice",
     persona: { name: "No real account", email: "nobody@example.com" },
     chat: [
-      { k: "click", t: "Already have an account" },
+      { k: "type", t: "Hi, I already have a ShiftKey account" },
       { k: "type", t: "nobody@example.com" },
       { k: "type", t: "nobody1@example.com" },
       { k: "type", t: "Yes, please open a case" }
@@ -283,7 +278,7 @@ window.NEGATIVES = [
     title: "B: Ambiguous credential",
     persona: { name: "Tracy Curry", email: "tracylcurry3814@gmail.com" },
     chat: [
-      { k: "click", t: "Already have an account" },
+      { k: "type", t: "Hi, I already have a ShiftKey account" },
       { k: "type", t: "tracylcurry3814@gmail.com" },
       { k: "type", t: "flu shot status" }
     ],

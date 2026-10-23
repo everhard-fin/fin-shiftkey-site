@@ -45,7 +45,7 @@
         <ul>
           <li>Emails are checked only against a mock ShiftKey database of 6 demo professionals. No email is ever sent.</li>
           <li>Use the demo emails exactly as shown.</li>
-          <li>Click "Reset conversation" (bottom-left) between scenarios.</li>
+          <li>Open the Messenger (bottom-right) and type each line below. There are no buttons to click. Press "Reset conversation" (bottom-left) between scenarios.</li>
           <li>The mock's "today" matches the real date.</li>
           <li>A human handoff is not configured yet. Fin gives support hours and offers a case instead.</li>
         </ul>
@@ -72,8 +72,21 @@
     <section class="wrap">
       <h2>Try to break it</h2>
       <div class="grid" id="negative-grid"></div>
-      <div class="clear-row">
-        <button type="button" class="btn-outline" id="clear-results">Clear results</button>
+    </section>
+
+    <section class="wrap">
+      <div class="results-panel" aria-labelledby="results-title">
+        <h2 id="results-title">Results</h2>
+        <p class="results-banner" id="shared-banner" hidden>Results loaded from a shared link</p>
+        <label class="name-field">Your name
+          <input type="text" id="tester-name" maxlength="100" autocomplete="name">
+        </label>
+        <p class="results-summary" id="results-summary" aria-live="polite"></p>
+        <div class="results-actions">
+          <button type="button" class="btn-solid" id="copy-results">Copy results</button>
+          <button type="button" class="btn-solid" id="copy-link">Copy share link</button>
+          <button type="button" class="btn-outline" id="clear-results">Clear results</button>
+        </div>
       </div>
     </section>
   </main>

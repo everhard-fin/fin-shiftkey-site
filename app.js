@@ -12,6 +12,111 @@ function saveResults(r) {
   try { localStorage.setItem(STORE_KEY, JSON.stringify(r)); } catch (e) { /* storage unavailable */ }
 }
 
+const NAME_KEY = "fin-shiftkey-name";
+const NOTES_KEY = "fin-shiftkey-notes";
+
+function loadJSON(key) {
+  try { return JSON.parse(localStorage.getItem(key)) || {}; } catch (e) { return {}; }
+}
+function saveJSON(key, v) {
+  try { localStorage.setItem(key, JSON.stringify(v)); } catch (e) { /* storage unavailable */ }
+}
+function loadName() {
+  try { return localStorage.getItem(NAME_KEY) || ""; } catch (e) { return ""; }
+}
+function saveName(n) {
+  try { localStorage.setItem(NAME_KEY, n); } catch (e) { /* storage unavailable */ }
+}
+
+function allScenarios() {
+  const list = window.SCENARIOS.map((s, i) => ({ s, label: (i + 1) + " " + s.title }));
+  return list.concat(window.NEGATIVES.map(s => ({ s, label: s.title })));
+}
+
+function encodeState() {
+  const p = loadResults();
+  const notes = loadJSON(NOTES_KEY);
+  const data = { n: loadName(), p, notes };
+  const bytes = new TextEncoder().encode(JSON.stringify(data));
+  let bin = "";
+  bytes.forEach(b => { bin += String.fromCharCode(b); });
+  return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+function decodeState(str) {
+  const b64 = str.replace(/-/g, "+").replace(/_/g, "/");
+  const bin = atob(b64 + "===".slice((b64.length + 3) % 4));
+  const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+  return JSON.parse(new TextDecoder().decode(bytes));
+}
+
+function hasState() {
+  return !!(loadName() || Object.keys(loadResults()).length || Object.keys(loadJSON(NOTES_KEY)).length);
+}
+
+function shareUrl() {
+  const base = location.href.split("#")[0];
+  return hasState() ? base + "#r=" + encodeState() : base;
+}
+
+function syncHash() {
+  try { history.replaceState(null, "", shareUrl()); } catch (e) { /* history unavailable */ }
+}
+
+function today() {
+  const d = new Date();
+  const pad = n => String(n).padStart(2, "0");
+  return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+}
+
+function summaryLine() {
+  const r = loadResults();
+  const n = allScenarios().filter(({ s }) => r[s.id]).length;
+  return n + " of 13 passed";
+}
+
+function updateSummary() {
+  const out = document.getElementById("results-summary");
+  if (out) out.textContent = summaryLine() + " · " + today();
+}
+
+function onChange() {
+  updateSummary();
+  syncHash();
+}
+
+function resultsText() {
+  const r = loadResults();
+  const notes = loadJSON(NOTES_KEY);
+  const lines = ["ShiftKey Fin test results, " + today() + ", tester " + (loadName() || "unnamed")];
+  allScenarios().forEach(({ s, label }) => {
+    const note = (notes[s.id] || "").trim();
+    lines.push(label + ": " + (r[s.id] ? "PASS" : "not yet") + (note ? " (" + note + ")" : ""));
+  });
+  lines.push(summaryLine());
+  lines.push("Link: " + shareUrl());
+  return lines.join("\n");
+}
+
+function applyHash() {
+  const m = /^#r=([A-Za-z0-9_-]+)$/.exec(location.hash);
+  if (!m) return false;
+  try {
+    const d = decodeState(m[1]);
+    const valid = new Set(allScenarios().map(({ s }) => s.id));
+    const p = {};
+    Object.keys(d.p || {}).forEach(k => { if (valid.has(k) && d.p[k]) p[k] = true; });
+    const notes = {};
+    Object.keys(d.notes || {}).forEach(k => { if (valid.has(k) && d.notes[k]) notes[k] = String(d.notes[k]).slice(0, 200); });
+    saveResults(p);
+    saveJSON(NOTES_KEY, notes);
+    saveName(String(d.n || "").slice(0, 100));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
 function el(tag, cls, text) {
   const n = document.createElement(tag);
   if (cls) n.className = cls;
@@ -137,15 +242,34 @@ function buildCard(s, index, results) {
     if (cb.checked) r[s.id] = true; else delete r[s.id];
     saveResults(r);
     card.classList.toggle("done", cb.checked);
+    onChange();
   });
   label.appendChild(cb);
   label.appendChild(document.createTextNode(" Passed"));
   card.classList.toggle("done", cb.checked);
-  card.appendChild(label);
+
+  const row = el("div", "check-row");
+  row.appendChild(label);
+  const note = document.createElement("input");
+  note.type = "text";
+  note.className = "note-input";
+  note.maxLength = 200;
+  note.placeholder = "Notes (optional)";
+  note.setAttribute("aria-label", "Notes for " + s.title);
+  note.value = loadJSON(NOTES_KEY)[s.id] || "";
+  note.addEventListener("input", () => {
+    const n = loadJSON(NOTES_KEY);
+    if (note.value.trim()) n[s.id] = note.value; else delete n[s.id];
+    saveJSON(NOTES_KEY, n);
+    onChange();
+  });
+  row.appendChild(note);
+  card.appendChild(row);
   return card;
 }
 
 function render() {
+  const loaded = applyHash();
   const results = loadResults();
 
   const tbody = document.getElementById("persona-rows");
@@ -172,10 +296,26 @@ function render() {
   const neg = document.getElementById("negative-grid");
   window.NEGATIVES.forEach((s, i) => neg.appendChild(buildCard(s, "ABC"[i], results)));
 
+  const nameInput = document.getElementById("tester-name");
+  nameInput.value = loadName();
+  nameInput.addEventListener("input", () => { saveName(nameInput.value); onChange(); });
+
+  document.getElementById("copy-results").addEventListener("click", e => copyText(resultsText(), e.currentTarget));
+  document.getElementById("copy-link").addEventListener("click", e => copyText(shareUrl(), e.currentTarget));
+
+  if (loaded) document.getElementById("shared-banner").hidden = false;
+  onChange();
+
   document.getElementById("clear-results").addEventListener("click", () => {
     saveResults({});
+    saveJSON(NOTES_KEY, {});
+    saveName("");
+    nameInput.value = "";
     document.querySelectorAll(".check input").forEach(c => { c.checked = false; });
+    document.querySelectorAll(".note-input").forEach(c => { c.value = ""; });
     document.querySelectorAll(".card").forEach(c => c.classList.remove("done"));
+    document.getElementById("shared-banner").hidden = true;
+    onChange();
   });
   document.getElementById("reset-conversation").addEventListener("click", resetConversation);
 }
