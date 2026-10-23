@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ShiftKey Provider Support Test Site</title>
+  <meta name="description" content="Test Fin on 10 ShiftKey provider support scenarios by chat or phone.">
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <img src="logo.svg" alt="ShiftKey" class="logo">
+      <nav class="nav" aria-label="Demo navigation">
+        <a href="#" class="muted" aria-disabled="true" tabindex="-1">Professionals</a>
+        <a href="#" class="muted" aria-disabled="true" tabindex="-1">Facilities</a>
+        <a href="#" class="muted" aria-disabled="true" tabindex="-1">About Us</a>
+      </nav>
+      <span class="badge">Fin demo environment</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <h1>Provider Support test site</h1>
+        <p class="lead">This page lets you test Fin on the 10 scenarios ShiftKey shared, by chat (Messenger bottom-right) or by phone. Pick a scenario card below, follow the steps, and tick "Passed" when Fin gets it right.</p>
+        <div class="facts">
+          <div class="fact">
+            <span class="fact-label">Call Fin Voice</span>
+            <a class="fact-big" href="tel:+16672448228">+1 667 244 8228</a>
+          </div>
+          <div class="fact">
+            <span class="fact-label">Chat</span>
+            <span class="fact-big">Open the Messenger in the corner</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <aside class="callout" aria-labelledby="before-title">
+        <h2 id="before-title">Before you start</h2>
+        <ul>
+          <li>Emails are checked only against a mock ShiftKey database of 6 demo professionals. No email is ever sent.</li>
+          <li>Use the demo emails exactly as shown.</li>
+          <li>Click "Reset conversation" (bottom-left) between scenarios.</li>
+          <li>The mock's "today" matches the real date.</li>
+          <li>A human handoff is not configured yet. Fin gives support hours and offers a case instead.</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="wrap">
+      <h2>Demo professionals</h2>
+      <div class="table-scroll">
+        <table class="personas">
+          <thead>
+            <tr><th>Provider</th><th>Email</th><th>In Review</th><th>Invalid</th><th>Missing</th><th>Eligible</th></tr>
+          </thead>
+          <tbody id="persona-rows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <h2>Scenarios</h2>
+      <div class="grid" id="scenario-grid"></div>
+    </section>
+
+    <section class="wrap">
+      <h2>Try to break it</h2>
+      <div class="grid" id="negative-grid"></div>
+      <div class="clear-row">
+        <button type="button" class="btn-outline" id="clear-results">Clear results</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">&copy; 2026 ShiftKey · Demo environment for Fin evaluation. Not the live ShiftKey site.</div>
+  </footer>
+
+  <button type="button" id="reset-conversation" class="reset-btn">Reset conversation</button>
+
+  <script src="scenarios.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
